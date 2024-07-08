@@ -1,38 +1,51 @@
 // src/components/SignUp.jsx
 import React, { useState } from 'react';
-import { auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
+    const auth = getAuth();
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert('Sign up successful');
+      setSuccess('Sign up successful!');
+      setError('');
+      setEmail('');
+      setPassword('');
+      // Redirect to home or login page after successful sign-up
+      navigate('/');
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
+      setSuccess('');
     }
   };
 
   return (
     <div className="form-container">
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
+      <form onSubmit={handleSignUp}>
         <input
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           required
         />
         <input
           type="password"
-          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
           required
         />
         <button type="submit">Sign Up</button>
