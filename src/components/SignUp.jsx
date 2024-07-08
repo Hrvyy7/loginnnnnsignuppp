@@ -1,29 +1,26 @@
 // src/components/SignUp.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const auth = getAuth();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert('Account created successfully');
-      navigate('/');
+      alert('Sign up successful');
     } catch (error) {
-      alert('Sign Up failed: ' + error.message);
+      alert(error.message);
     }
   };
 
   return (
     <div className="form-container">
       <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
