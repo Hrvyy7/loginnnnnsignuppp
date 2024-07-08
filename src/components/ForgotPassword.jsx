@@ -1,28 +1,25 @@
 // src/components/ForgotPassword.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../firebase'; // Adjust the path as necessary
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();
 
-  const handleForgotPassword = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const auth = getAuth();
     try {
       await sendPasswordResetEmail(auth, email);
       alert('Password reset email sent');
-      navigate('/');
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert(error.message);
     }
   };
 
   return (
     <div className="form-container">
       <h2>Forgot Password</h2>
-      <form onSubmit={handleForgotPassword}>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
