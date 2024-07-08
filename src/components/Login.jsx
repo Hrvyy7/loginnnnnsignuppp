@@ -1,28 +1,29 @@
 // src/components/Login.jsx
 import React, { useState } from 'react';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      alert('Logged in successfully');
       navigate('/home');
     } catch (error) {
-      alert('Login failed: ' + error.message);
+      alert(error.message);
     }
   };
 
   return (
     <div className="form-container">
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
@@ -39,10 +40,6 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
-      <div className="form-switch">
-        <button onClick={() => navigate('/signup')}>Sign Up</button>
-        <button onClick={() => navigate('/forgot')}>Forgot Password</button>
-      </div>
     </div>
   );
 };
