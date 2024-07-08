@@ -13,18 +13,18 @@ const App = () => {
   return (
     <Router>
       <div className="app-container">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/forgot" element={<ForgotPassword />} />
-          <Route path="/home" element={<Home />} />
-        </Routes>
+        {form === 'login' && <Login />}
+        {form === 'signup' && <SignUp />}
+        {form === 'forgot' && <ForgotPassword />}
         <div className="form-switch">
           <button onClick={() => setForm('login')}>Login</button>
           <button onClick={() => setForm('signup')}>Sign Up</button>
           <button onClick={() => setForm('forgot')}>Forgot Password</button>
         </div>
       </div>
+      <Routes>
+        <Route path="/home" element={<Home />} />
+      </Routes>
     </Router>
   );
 };
