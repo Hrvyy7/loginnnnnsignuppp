@@ -13,6 +13,7 @@ const SignUp = () => {
     const auth = getAuth();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      alert('Account created successfully');
       navigate('/');
     } catch (error) {
       alert('Sign Up failed: ' + error.message);
